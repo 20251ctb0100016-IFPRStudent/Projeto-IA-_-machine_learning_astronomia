@@ -49,7 +49,7 @@ CREATE TABLE galaxy(
 );
 
 CREATE TABLE galaxyCluster(
-    idgalaxyCluster                             INTEGER PRIMARY KEY,
+    idGalaxyCluster                             INTEGER PRIMARY KEY,
     nameGalaxyCluster                           TEXT NOT NULL,
     morphologyTypeGalaxyCluster                 TEXT NOT NULL,
     distanceGalaxyCluster_LY                    TEXT NOT NULL,

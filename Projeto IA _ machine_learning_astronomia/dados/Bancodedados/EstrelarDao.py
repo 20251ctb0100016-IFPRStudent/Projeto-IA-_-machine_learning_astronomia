@@ -1,6 +1,8 @@
 import sqlite3
+import os
 from dataclasses import dataclass
 from typing import Optional, List
+
 
 # ==========================================
 # 1. DATA TRANSFER OBJECTS (DTOs)
@@ -88,12 +90,14 @@ class SuperGalaxyClusterDTO:
 # ==========================================
 # 2. DATA ACCESS OBJECTS (DAOs)
 # ==========================================
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "DadosAstronomico.sqlite")
 
-class BaseDAO:
-    def __init__(self, db_path: str = "dados/Banco de dados/DadosAstronomico.sqlite"):
+class BaseDAO: # ou no __init__ do seu DAO
+    def __init__(self, db_path=DB_PATH):
         self.db_path = db_path
 
-    def _get_connection(self) -> sqlite3.Connection:
+    def _get_connection(self):
         return sqlite3.connect(self.db_path)
 
 # ----------------------------------------------------------------------------------------------------- Estrelas -----------------------------------------------------------------------
@@ -160,6 +164,12 @@ class StarDAO(BaseDAO):
                 ))
         return estrelas
 
+        def delete(self, id_star: int) -> bool:
+            query = "DELETE FROM star WHERE idStar = ?"
+            with self._get_connection() as conn:
+                cursor = conn.execute(query, (id_star,))
+                conn.commit()
+                return cursor.rowcount > 0
 # ---------------------------------------------------------------------------------------- Aglomerado Estrelar ---------------------------------------------------------------------------
 class StarClusterDAO(BaseDAO):
     def find_by_id(self, cluster_id: int) -> Optional[StarClusterDTO]:
@@ -223,6 +233,12 @@ class StarClusterDAO(BaseDAO):
                 ))
         return aglomerados
 
+    def delete(self, cluster_id: int) -> bool:
+                query = "DELETE FROM starCluster WHERE idStarCluster = ?"
+                with self._get_connection() as conn:
+                    cursor = conn.execute(query, (cluster_id,))
+                    conn.commit()
+                    return cursor.rowcount > 0
 # --------------------------------------------------------------------------------------- SuperAglomeradoEstrelar ----------------------------------------------------------------------------
 class SuperStarClusterDAO(BaseDAO):
     def find_by_id(self, s_cluster_id: int) -> Optional[SuperStarClusterDTO]:
@@ -299,6 +315,12 @@ class SuperStarClusterDAO(BaseDAO):
                 ))
         return super_aglomerados
 
+    def delete(self, s_cluster_id: int) -> bool:
+                    query = "DELETE FROM superStarCluster WHERE idSuperStarCluster = ?"
+                    with self._get_connection() as conn:
+                        cursor = conn.execute(query, (s_cluster_id,))
+                        conn.commit()
+                        return cursor.rowcount > 0
 # ------------------------------------------------------------------------------------------------------------ Galáxia ----------------------------------------------------------------------
 class GalaxyDAO(BaseDAO):
     def find_by_id(self, galaxy_id: int) -> Optional[GalaxyDTO]:
@@ -362,7 +384,13 @@ class GalaxyDAO(BaseDAO):
                     starFormationRateGalaxy_Sun_Y=row[7], idGalaxyCluster=row[8]
                 ))
         return galaxias
-
+    
+    def delete(self, galaxy_id: int) -> bool:
+        query = "DELETE FROM galaxy WHERE idGalaxy = ?"
+        with self._get_connection() as conn:
+            cursor = conn.execute(query, (galaxy_id,))
+            conn.commit()
+            return cursor.rowcount > 0
 # ---------------------------------------------------------------------------------------------- Aglomerado Galaxia ----------------------------------------------------------------------------
 class GalaxyClusterDAO(BaseDAO):
     def find_by_id(self, g_cluster_id: int) -> Optional[GalaxyClusterDTO]:
@@ -440,6 +468,12 @@ class GalaxyClusterDAO(BaseDAO):
                 ))
         return aglomerados_galaxias
 
+    def delete(self, g_cluster_id: int) -> bool:
+            query = "DELETE FROM galaxyCluster WHERE idGalaxyCluster = ?"
+            with self._get_connection() as conn:
+                cursor = conn.execute(query, (g_cluster_id,))
+                conn.commit()
+                return cursor.rowcount > 0
 # ------------------------------------------------------------------------------------------ SuperAglomerado Estrelar --------------------------------------------------------------------------------
 class SuperGalaxyClusterDAO(BaseDAO):
     def find_by_id(self, sg_cluster_id: int) -> Optional[SuperGalaxyClusterDTO]:
@@ -508,3 +542,10 @@ class SuperGalaxyClusterDAO(BaseDAO):
                     overdensityFactor=row[8]
                 ))
         return super_aglomerados_galaxias
+
+    def delete(self, sg_cluster_id: int) -> bool:
+                query = "DELETE FROM superGalaxyCluster WHERE idSuperGalaxyCluster = ?"
+                with self._get_connection() as conn:
+                    cursor = conn.execute(query, (sg_cluster_id,))
+                    conn.commit()
+                    return cursor.rowcount > 0
