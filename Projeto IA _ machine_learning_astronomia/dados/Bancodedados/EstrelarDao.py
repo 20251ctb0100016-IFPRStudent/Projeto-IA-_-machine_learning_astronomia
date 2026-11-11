@@ -96,7 +96,7 @@ class BaseDAO:
     def _get_connection(self) -> sqlite3.Connection:
         return sqlite3.connect(self.db_path)
 
-
+# ----------------------------------------------------------------------------------------------------- Estrelas -----------------------------------------------------------------------
 class StarDAO(BaseDAO):
     def find_by_id(self, star_id: int) -> Optional[StarDTO]:
         query = """
@@ -160,7 +160,7 @@ class StarDAO(BaseDAO):
                 ))
         return estrelas
 
-
+# ---------------------------------------------------------------------------------------- Aglomerado Estrelar ---------------------------------------------------------------------------
 class StarClusterDAO(BaseDAO):
     def find_by_id(self, cluster_id: int) -> Optional[StarClusterDTO]:
         query = """
@@ -223,7 +223,7 @@ class StarClusterDAO(BaseDAO):
                 ))
         return aglomerados
 
-
+# --------------------------------------------------------------------------------------- SuperAglomeradoEstrelar ----------------------------------------------------------------------------
 class SuperStarClusterDAO(BaseDAO):
     def find_by_id(self, s_cluster_id: int) -> Optional[SuperStarClusterDTO]:
         query = """
@@ -299,7 +299,7 @@ class SuperStarClusterDAO(BaseDAO):
                 ))
         return super_aglomerados
 
-
+# ------------------------------------------------------------------------------------------------------------ Galáxia ----------------------------------------------------------------------
 class GalaxyDAO(BaseDAO):
     def find_by_id(self, galaxy_id: int) -> Optional[GalaxyDTO]:
         query = """
@@ -363,7 +363,7 @@ class GalaxyDAO(BaseDAO):
                 ))
         return galaxias
 
-
+# ---------------------------------------------------------------------------------------------- Aglomerado Galaxia ----------------------------------------------------------------------------
 class GalaxyClusterDAO(BaseDAO):
     def find_by_id(self, g_cluster_id: int) -> Optional[GalaxyClusterDTO]:
         query = """
@@ -440,7 +440,7 @@ class GalaxyClusterDAO(BaseDAO):
                 ))
         return aglomerados_galaxias
 
-
+# ------------------------------------------------------------------------------------------ SuperAglomerado Estrelar --------------------------------------------------------------------------------
 class SuperGalaxyClusterDAO(BaseDAO):
     def find_by_id(self, sg_cluster_id: int) -> Optional[SuperGalaxyClusterDTO]:
         query = """
