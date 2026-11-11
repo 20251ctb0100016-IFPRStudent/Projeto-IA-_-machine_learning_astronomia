@@ -91,7 +91,7 @@ class SuperGalaxyClusterDTO:
 # 2. DATA ACCESS OBJECTS (DAOs)
 # ==========================================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, "DadosAstronomico.sqlite")
+DB_PATH = os.path.join(BASE_DIR, "bancoDadosAstronomicos")
 
 class BaseDAO: # ou no __init__ do seu DAO
     def __init__(self, db_path=DB_PATH):
@@ -100,8 +100,20 @@ class BaseDAO: # ou no __init__ do seu DAO
     def _get_connection(self):
         return sqlite3.connect(self.db_path)
 
+    if not os.path.exists(DB_PATH):
+        print(f"[AVISO] Ficheiro de base de dados NÃO encontrado em: {DB_PATH}")
+        print(f"Ficheiros presentes na pasta: {os.listdir(BASE_DIR)}")
+    else:
+        print(f"[OK] Base de dados localizada em: {DB_PATH}")
+
 # ----------------------------------------------------------------------------------------------------- Estrelas -----------------------------------------------------------------------
 class StarDAO(BaseDAO):
+    def __init__(self, db_path=DB_PATH):
+        self.db_path = db_path
+
+    def _get_connection(self):
+        return sqlite3.connect(self.db_path)
+    
     def find_by_id(self, star_id: int) -> Optional[StarDTO]:
         query = """
         SELECT idStar, nameStar, spectralClass, mainSpectralClass, evolutionaryStage,
