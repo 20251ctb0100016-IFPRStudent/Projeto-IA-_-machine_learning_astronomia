@@ -2,12 +2,13 @@ import matplotlib.pyplot as plt
 import pandas as p
 
 df = p.read_csv("Estrelas_BuracosNegros_Quasares_DataSetF.csv")
-print(df.head())
+#print(df.head())
+print(df[['Name','Spectral Class','log_g']])
 
 
 
-x = []
-x.append(175)
+x = [10,12,12,15,15]
+#x.append(175)
 y = [2, 4, 6, 8, 10]
 
 plt.plot(x, y, marker="o")
